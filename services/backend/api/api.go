@@ -3,25 +3,8 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 )
-
-// Balance params
-type BalanceParams struct {
-	Username string
-}
-
-type AccountParams struct {
-	Username string
-	Balance  int
-}
-
-type BalanceResponse struct {
-	// Response code
-	Code int
-
-	// Account balance
-	Balance int
-}
 
 type UserParams struct {
 	Username string
@@ -37,9 +20,14 @@ type UserResponse struct {
 
 	// Token
 	Token string
+}
 
-	// Account Balance
-	Balance int
+type HabitResponse struct {
+	// Response code
+	Code      int
+	Name      string
+	Intention string
+	StartDate time.Time
 }
 
 type Response struct {

@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/priyanka-choubey/habitrick/services/backend/handlers"
+	"github.com/priyanka-choubey/habitrick/services/backend/middleware"
 )
 
 func main() {
@@ -16,10 +17,14 @@ func main() {
 	userSubroute := r.PathPrefix("/user").Subrouter()
 	userSubroute.HandleFunc("/", handlers.CreateUser).Methods("POST")
 
-	// s := r.PathPrefix("/habit").Subrouter()
-	// s.Use(middleware.Authorization)
-	// s.HandleFunc("/", GetHabits).Methods("GET")
-	// s.HandleFunc("/", CreateHabit).Methods("POST")
+	userDeleteSubroute := userSubroute.PathPrefix("/delete").Subrouter()
+	userDeleteSubroute.Use(middleware.Authorization)
+	userDeleteSubroute.HandleFunc("/", handlers.DeleteUser).Methods("DELETE")
+
+	habitSubroute := r.PathPrefix("/habit").Subrouter()
+	habitSubroute.Use(middleware.Authorization)
+	// habitSubroute.HandleFunc("/", GetHabits).Methods("GET")
+	habitSubroute.HandleFunc("/", handlers.CreateHabit).Methods("POST")
 	// s.HandleFunc("/{id}", HabitTrack).Methods("GET")
 	// http.Handle("/", r)
 

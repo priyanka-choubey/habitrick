@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/priyanka-choubey/habitrick/backend/api"
-	"github.com/priyanka-choubey/habitrick/backend/database"
+	"github.com/priyanka-choubey/habitrick/services/backend/api"
+	db "github.com/priyanka-choubey/habitrick/services/backend/database"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -23,14 +23,14 @@ func Authorization(next http.Handler) http.Handler {
 			return
 		}
 
-		var database *database.MySqlDatabase
-		database, err = database.NewDatabase()
+		var database *db.MySqlDatabase
+		database, err = db.NewDatabase()
 		if err != nil {
 			api.InternalErrorHandler(w)
 			return
 		}
 
-		var loginDetails *database.LoginDetails
+		var loginDetails *db.LoginDetails
 		loginDetails, err = (*database).GetUserLoginDetails(username)
 		if err != nil {
 			api.RequestErrorHandler(w, err)

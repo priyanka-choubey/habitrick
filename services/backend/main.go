@@ -1,19 +1,35 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"time"
+
+	"github.com/gorilla/mux"
+
+	"github.com/priyanka-choubey/habitrick/services/backend/handlers"
 )
 
 func main() {
-	handler := http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		resp := []byte(`{"status": "ok"}`)
-		rw.Header().Set("Content-Type", "application/json")
-		rw.Header().Set("Content-Length", fmt.Sprint(len(resp)))
-		rw.Write(resp)
-	})
+	r := mux.NewRouter()
 
-	log.Println("Server is available at http://localhost:8000")
-	log.Fatal(http.ListenAndServe(":8000", handler))
+	userSubroute := r.PathPrefix("/user").Subrouter()
+	userSubroute.HandleFunc("/", handlers.CreateUser).Methods("POST")
+
+	// s := r.PathPrefix("/habit").Subrouter()
+	// s.Use(middleware.Authorization)
+	// s.HandleFunc("/", GetHabits).Methods("GET")
+	// s.HandleFunc("/", CreateHabit).Methods("POST")
+	// s.HandleFunc("/{id}", HabitTrack).Methods("GET")
+	// http.Handle("/", r)
+
+	srv := &http.Server{
+		Handler: r,
+		Addr:    "127.0.0.1:8000",
+		// Good practice: enforce timeouts for servers you create!
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
+	log.Fatal(srv.ListenAndServe())
 }

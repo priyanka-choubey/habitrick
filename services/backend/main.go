@@ -7,7 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/priyanka-choubey/habitrick/services/backend/handlers"
+	"github.com/priyanka-choubey/habitrick/handlers"
 )
 
 func main() {

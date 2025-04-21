@@ -1,4 +1,4 @@
-module github.com/priyanka-choubey/habitrick/services/backend
+module github.com/priyanka-choubey/habitrick
 
 go 1.24.1
 
